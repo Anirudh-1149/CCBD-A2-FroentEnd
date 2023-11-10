@@ -10,52 +10,65 @@ window.addEventListener("load", ()=>{
     e.preventDefault();
     var fileInput = document.getElementById('upload');
     var file = fileInput.files[0];
-    
+    // print(file)
+    console.log(file)
     if (file) {
-      // var reader = new FileReader();
-
-      // reader.onload = function() {
-      //     var base64Data = reader.result
-      //     console.log(base64Data)
-      //     var customLabels = document.getElementById('customLabel').value;
-      //     var labels = customLabels.split(/\,| /).join(',');
-      //     var params = {'bucket': 'pawa-b2-ccbd', 'filename': file.name.replace(/\s/g, ''), 'x-amz-meta-customLabels': labels};
-      //     var body = {base64Data};
-      //     var additionalParams = {
-      //       headers :{
-      //         'Content-Type': 'image/jpeg'
-      //       }
-      //     }
-      //     sdk.uploadBucketFilenamePut(params, body,additionalParams).then((response) => {
-      //       console.log(response)
-      //     }).catch((error) => {
-      //       console.log('an error occurred', error);
-      //     });
-      // }
-      // reader.readAsDataURL(file)
+      var reader = new FileReader();
+      console.log('test')
+      reader.onload = function() {
+          // var data = reader.result.split(',')[1]
+          // console.log(data)
+          // var base64_decoded = atob(data)
+          // console.log(base64_decoded)
+          // var base64_encoded = btoa(data)
+          // console.log(base64_encoded)
+          // var base64_decodedutf8Encoded = encodeURI(base64_decoded)
+          // console.log(base64_decodedutf8Encoded)
+          // var base64_encodedutf8Decoded = encodeURI(base64_encoded)
+          const arrayBuffer = reader.result;
+          console.log(arrayBuffer)
+          // const byteArray = new Uint8Array(arrayBuffer);
+          // // Convert the byte array to hexadecimal string
+          // console.log(byteArray)
+          // var hexString = Array.from(byteArray, byte => `\\x${byte.toString(16).padStart(2, '0')}`).join('');
+          // hexString = 'b\'' + hexString + '\''
+          // console.log(hexString);
+          // console.log(base64_encodedutf8Decoded)
+          var customLabels = document.getElementById('customLabel').value;
+          var labels = customLabels.split(/\,| /).join(',');
+          var params = {'bucket': 'pawa-b2-ccbd', 'filename': file.name.replace(/\s/g, ''), 'x-amz-meta-customLabels': labels};
+          file.constructor=()=>file;
+          var body = file;
+          var additionalParams = {
+            headers :{
+              'Content-Type': 'image/jpeg'
+            }
+          }
+          sdk.uploadBucketFilenamePut(params, body,additionalParams).then((response) => {
+            console.log(response)
+          }).catch((error) => {
+            console.log('an error occurred', error);
+          });
+      }
+      reader.readAsBinaryString(file)
 
       // console.log(file)
       // file.constructor=()=>file;
-      console.log(file)
-      var customLabels = document.getElementById('customLabel').value;
-      // var formData = new FormData();
-      // formData.append('file', file);
-      // for (var key of formData.entries()) {
-      //   console.log(key[0] + ', ' + key[1]);
+      // console.log(file)
+      // var customLabels = document.getElementById('customLabel').value;
+      // var labels = customLabels.split(/\,| /).join(',');
+      // var params = {'bucket': 'pawa-b2-ccbd', 'filename': file.name.replace(/\s/g, ''), 'x-amz-meta-customLabels': labels};
+      // var body = {'src' : file};
+      // var additionalParams = {
+      //   headers :{
+      //     'Content-Type': 'image/jpeg'
+      //   }
       // }
-      var labels = customLabels.split(/\,| /).join(',');
-      var params = {'bucket': 'pawa-b2-ccbd', 'filename': file.name.replace(/\s/g, ''), 'x-amz-meta-customLabels': labels};
-      var body = {file};
-      var additionalParams = {
-        headers :{
-          'Content-Type': 'image/jpeg'
-        }
-      }
-      sdk.uploadBucketFilenamePut(params, body,additionalParams).then((response) => {
-        console.log(response)
-      }).catch((error) => {
-        console.log('an error occurred', error);
-      });
+      // sdk.uploadBucketFilenamePut(params, body,additionalParams).then((response) => {
+      //   console.log(response)
+      // }).catch((error) => {
+      //   console.log('an error occurred', error);
+      // });
     }
   });
 
