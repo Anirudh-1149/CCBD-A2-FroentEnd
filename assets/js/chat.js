@@ -10,66 +10,20 @@ window.addEventListener("load", ()=>{
     e.preventDefault();
     var fileInput = document.getElementById('upload');
     var file = fileInput.files[0];
-    // print(file)
-    console.log(file)
-    if (file) {
-      var reader = new FileReader();
-      console.log('test')
-      reader.onload = function() {
-          // var data = reader.result.split(',')[1]
-          // console.log(data)
-          // var base64_decoded = atob(data)
-          // console.log(base64_decoded)
-          // var base64_encoded = btoa(data)
-          // console.log(base64_encoded)
-          // var base64_decodedutf8Encoded = encodeURI(base64_decoded)
-          // console.log(base64_decodedutf8Encoded)
-          // var base64_encodedutf8Decoded = encodeURI(base64_encoded)
-          const arrayBuffer = reader.result;
-          console.log(arrayBuffer)
-          // const byteArray = new Uint8Array(arrayBuffer);
-          // // Convert the byte array to hexadecimal string
-          // console.log(byteArray)
-          // var hexString = Array.from(byteArray, byte => `\\x${byte.toString(16).padStart(2, '0')}`).join('');
-          // hexString = 'b\'' + hexString + '\''
-          // console.log(hexString);
-          // console.log(base64_encodedutf8Decoded)
-          var customLabels = document.getElementById('customLabel').value;
-          var labels = customLabels.split(/\,| /).join(',');
-          var params = {'bucket': 'pawa-b2-ccbd', 'filename': file.name.replace(/\s/g, ''), 'x-amz-meta-customLabels': labels};
-          file.constructor=()=>file;
-          var body = file;
-          var additionalParams = {
-            headers :{
-              'Content-Type': 'image/jpeg'
-            }
-          }
-          sdk.uploadBucketFilenamePut(params, body,additionalParams).then((response) => {
-            console.log(response)
-          }).catch((error) => {
-            console.log('an error occurred', error);
-          });
-      }
-      reader.readAsBinaryString(file)
 
-      // console.log(file)
-      // file.constructor=()=>file;
-      // console.log(file)
-      // var customLabels = document.getElementById('customLabel').value;
-      // var labels = customLabels.split(/\,| /).join(',');
-      // var params = {'bucket': 'pawa-b2-ccbd', 'filename': file.name.replace(/\s/g, ''), 'x-amz-meta-customLabels': labels};
-      // var body = {'src' : file};
-      // var additionalParams = {
-      //   headers :{
-      //     'Content-Type': 'image/jpeg'
-      //   }
-      // }
-      // sdk.uploadBucketFilenamePut(params, body,additionalParams).then((response) => {
-      //   console.log(response)
-      // }).catch((error) => {
-      //   console.log('an error occurred', error);
-      // });
-    }
+    var customLabels = document.getElementById('customLabel').value;
+    var labels = customLabels.split(/\,| /).join(',');
+    let additionParameters = {
+      headers:{
+        'Content-Type': file.type , 
+        "X-Api-Key":"SelkfDnPdb3D3MQUNsQH67UxjnLiDiiKabf2ISTI", 
+        'X-Amz-Meta-CustomLabels': labels
+      }
+    };
+    var apiEndpoint = "https://cnv1jno707.execute-api.us-east-1.amazonaws.com/Api2Stage1/upload/pawa-b2-ccbd/" + file.name;
+    axios.put(apiEndpoint,file,additionParameters).then(response=>{
+      console.log(response.data)
+  })
   });
 
   document.getElementById('textSerachButton').addEventListener('click', function(){
@@ -90,12 +44,10 @@ window.addEventListener("load", ()=>{
 
   document.getElementById('search-image-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    console.log('here1')
     const container = document.getElementById('imageContainer');
     container.innerHTML = '';
     var userInput = document.getElementById('textSearch').value
     if(userInput){
-      console.log('here2')
       var additionalParams = {
         headers : {
           'Accept' : '*'
