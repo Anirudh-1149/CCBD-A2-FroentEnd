@@ -20,9 +20,9 @@ window.addEventListener("load", ()=>{
         'X-Amz-Meta-CustomLabels': labels
       }
     };
-    var apiEndpoint = "https://cnv1jno707.execute-api.us-east-1.amazonaws.com/Api2Stage1/upload/pawa-b2-ccbd/" + file.name;
+    var apiEndpoint = "https://bkqzqjw7sc.execute-api.us-east-1.amazonaws.com/Api2Stage1/upload/pawa-b2-ccbd/" + file.name;
     axios.put(apiEndpoint,file,additionParameters).then(response=>{
-      console.log(response.data)
+      console.log(response)
   })
   });
 
